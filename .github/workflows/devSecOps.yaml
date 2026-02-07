@@ -31,23 +31,8 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     # 3. CI – Tests por microservicio
-    - name: Run tests (users-service)
+    - name: Run tests (app.js)
       run: |
-        cd users-service
-        npm ci
-        npm run lint
-        npm test
-
-    - name: Run tests (academic-service)
-      run: |
-        cd academic-service
-        npm ci
-        npm run lint
-        npm test
-
-    - name: Run tests (api-gateway)
-      run: |
-        cd api-gateway
         npm ci
         npm run lint
         npm test
@@ -58,18 +43,10 @@ jobs:
         python3 -m pip install --upgrade pip
         pip install semgrep
 
-    - name: SAST user-service
+    - name: SAST app.js
       run: |
-        cd users-service
         semgrep --config=auto --severity=ERROR
-    - name: SAST academic-service
-      run: |
-        cd academic-service
-        semgrep --config=auto --severity=ERROR
-    - name: SAST api-gateway
-      run: |
-        cd api-gateway
-        semgrep --config=auto --severity=ERROR
+
     # 4. Build – Construir imágenes Docker
     - name: Build images with Docker Compose
       run: docker compose build
